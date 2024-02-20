@@ -33,6 +33,7 @@ jobs:
       
       - name: Run Python Script
         run: |
+          cd main
           python3 generate_content.py
       - name: Commit files
         run: |
