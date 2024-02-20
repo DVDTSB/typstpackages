@@ -1,0 +1,33 @@
+name: Move README Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  move_readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create content folder
+        run: mkdir -p content
+
+      - name: Move README files
+        run: |
+          for folder in packages/*/*/; do
+            version=$(basename "$(dirname "$folder")")
+            package=$(basename "$(dirname "$(dirname "$folder")")")
+            cp "$folder/README.md" "content/${package}_${version}.md"
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add content/
+          git commit -m "Move README files to content folder"
+          git push
