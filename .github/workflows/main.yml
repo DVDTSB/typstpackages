@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout dvdtsb/packages
+      - name: Checkout typst/packages
         uses: actions/checkout@v2
         with:
-          repository: dvdtsb/packages
+          repository: typst/packages
           path: packages
 
       - name: Checkout dvdtsb/docs
@@ -37,4 +37,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git commit -m "Generated content"
-          git push origin main
+          gh auth login --with-token "${{ secrets.GITHUB_TOKEN }}"
+          gh repo view --json url --json owner --json name --json default_branch --json clone_url | jq -r '.url, .owner, .name, .default_branch, .clone_url' | xargs -L 5 gh repo clone
+          cd packages
+          git checkout "${{ secrets.GITHUB_TOKEN }}"
+          git push
