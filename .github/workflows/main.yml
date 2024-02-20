@@ -21,7 +21,7 @@ jobs:
       - name: Checkout this
         uses: actions/checkout@v2
         with:
-          repository: dvdtsb/typstpackages
+          path: main
         
       - name: Debug File System
         run: |
