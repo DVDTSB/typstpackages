@@ -31,14 +31,13 @@ jobs:
         run: |
           python3 generate_content.py
 
-      - name: Commit Changes
+      - name: Commit files
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "Generated content"
-          gh auth login --with-token "${{ secrets.GITHUB_TOKEN }}"
-          gh repo view --json url --json owner --json name --json default_branch --json clone_url | jq -r '.url, .owner, .name, .default_branch, .clone_url' | xargs -L 5 gh repo clone
-          cd packages
-          git checkout "${{ secrets.GITHUB_TOKEN }}"
-          git push
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
