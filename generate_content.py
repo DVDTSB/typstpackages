@@ -5,8 +5,10 @@ def main():
     # Create the 'content/' folder if it doesn't exist
     os.makedirs("content", exist_ok=True)
 
+    # Get the path to the 'packages' directory
+    packages_dir = os.path.join(os.path.dirname(__file__), "packages")
+
     # Get folder names in 'packages' directory
-    packages_dir = "packages"
     folder_names = [f for f in os.listdir(packages_dir) if os.path.isdir(os.path.join(packages_dir, f))]
 
     # Generate content and write to 'content/folders.md'
