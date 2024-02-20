@@ -1,33 +1,40 @@
-name: Move README Files
+name: Generate Content
 
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * 1' # Run every Monday at midnight UTC
+  workflow_dispatch:
 
 jobs:
-  move_readme:
+  generate_content:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout dvdtsb/packages
+        uses: actions/checkout@v2
+        with:
+          repository: dvdtsb/packages
+          path: packages
+
+      - name: Checkout dvdtsb/docs
         uses: actions/checkout@v2
 
-      - name: Create content folder
-        run: mkdir -p content
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      - name: Move README files
+      - name: Run Python Script
         run: |
-          for folder in packages/*/*/; do
-            version=$(basename "$(dirname "$folder")")
-            package=$(basename "$(dirname "$(dirname "$folder")")")
-            cp "$folder/README.md" "content/${package}_${version}.md"
-          done
+          python3 generate_content.py
 
-      - name: Commit and push changes
+      - name: Commit Changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add content/
-          git commit -m "Move README files to content folder"
-          git push
+          git add -A
+          git commit -m "Generated content"
+          git push origin main
