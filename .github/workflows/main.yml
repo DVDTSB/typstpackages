@@ -18,6 +18,7 @@ jobs:
         with:
           repository: typst/packages
           path: packages
+          
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -26,7 +27,6 @@ jobs:
       - name: Run Python Script
         run: |
           python3 generate_content.py
-
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
