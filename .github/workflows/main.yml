@@ -18,12 +18,15 @@ jobs:
         with:
           repository: typst/packages
           path: packages
-          
+        
+      - name: Debug File System
+        run: |
+          ls -R
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-
+      
       - name: Run Python Script
         run: |
           python3 generate_content.py
