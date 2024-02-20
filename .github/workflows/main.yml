@@ -18,6 +18,10 @@ jobs:
         with:
           repository: typst/packages
           path: packages
+      - name: Checkout this
+        uses: actions/checkout@v2
+        with:
+          repository: dvdtsb/typstpackages
         
       - name: Debug File System
         run: |
